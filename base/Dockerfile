@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine
 
 LABEL maintainer="Gezim Sejdiu <g.sejdiu@gmail.com>, Giannis Mouchakis <gmouchakis@gmail.com>"
 
@@ -16,8 +16,9 @@ COPY finish-step.sh /
 
 #COPY bde-spark.css /css/org/apache/spark/ui/static/timeline-view.css
 
-RUN apk add --no-cache curl bash openjdk11 python3 py-pip nss libc6-compat coreutils procps \
-      && ln -s /lib64/ld-linux-x86-64.so.2 /lib/ld-linux-x86-64.so.2 \
+RUN apk add --no-cache curl bash openjdk17 python3 py-pip nss libc6-compat coreutils procps \
+      && rm -f /lib/ld-linux-x86-64.so.2 \
+      && ln -sf /lib64/ld-linux-x86-64.so.2 /lib/ld-linux-x86-64.so.2 \
       && chmod +x *.sh \
       && wget ${BASE_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
       && tar -xvzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
